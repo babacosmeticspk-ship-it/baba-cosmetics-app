@@ -1,0 +1,18 @@
+{
+  "appId": "com.babacosmetics.app",
+  "appName": "Baba Cosmetics",
+  "webDir": "www",
+  "android": { "backgroundColor": "#FFFFFF" },
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "SplashScreen": {
+      "launchShowDuration": 400,
+      "launchAutoHide": true,
+      "backgroundColor": "#FFFFFF",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_INSIDE"
+    },
+    "StatusBar": { "style": "LIGHT", "backgroundColor": "#FFFFFF", "overlaysWebView": false }
+  }
+}
