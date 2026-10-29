@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <title>Baba Cosmetics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+  <!-- ===== SPLASH (logo -> loading -> app) ===== -->
+  <div id="splash">
+    <div class="sp-glow"></div>
+    <div class="sp-logo-wrap">
+      <img id="spLogo" class="sp-logo" alt="Baba Cosmetics" />
+      <div class="sp-word" id="spWord">Baba<span>Cosmetics</span></div>
+    </div>
+    <div class="sp-line"><i></i></div>
+    <div class="sp-tag">Glow Naturally • Since Day One</div>
+    <div class="sp-dots"><b></b><b></b><b></b></div>
+  </div>
+
+  <!-- ===== APP SHELL ===== -->
+  <div id="app" class="hidden">
+    <header id="topbar">
+      <div class="tb-row">
+        <button class="icon-btn" id="btnMenu" aria-label="Menu">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h16"/></svg>
+        </button>
+        <button class="icon-btn hidden" id="btnBack" aria-label="Back">
+          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="tb-title" id="tbTitle"><img class="tb-logo" alt="Baba Cosmetics" /><span class="tb-word">Baba<em>Cosmetics</em></span></div>
+        <button class="icon-btn" id="btnCart" aria-label="Cart">
+          <svg viewBox="0 0 24 24"><path d="M3 4h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2L21 8H6.1"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg>
+          <span class="badge hidden" id="cartBadge">0</span>
+        </button>
+      </div>
+      <div class="search-pill" id="searchPill">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+        <span class="sp-rotating" id="searchHint">Search "Vitamin C Serum"</span>
+        <button class="mic" id="micTop" aria-label="Voice search"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>
+      </div>
+    </header>
+
+    <main id="view"></main>
+
+    <nav id="bottomnav">
+      <a data-tab="home" href="#/home" class="active">
+        <svg viewBox="0 0 24 24"><path d="M3.5 10.5L12 4l8.5 6.5V20a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+      <a data-tab="cat" href="#/cat">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="3.25"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg><span>Categories</span></a>
+      <a data-tab="search" href="#/search" class="nav-center">
+        <i><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></i><span>Search</span></a>
+      <a data-tab="wish" href="#/wish">
+        <svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></svg><span>Wishlist</span></a>
+      <a data-tab="account" href="#/account">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg><span>Account</span></a>
+    </nav>
+  </div>
+
+  <!-- ===== DRAWER ===== -->
+  <div id="drawerMask"></div>
+  <aside id="drawer">
+    <div class="dr-head">
+      <img class="dr-logo" alt="Baba Cosmetics" />
+      <div class="dr-word">Baba<em>Cosmetics</em></div>
+      <p>Pakistan's glow-care brand</p>
+      <button class="icon-btn dr-close" id="drClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="dr-list" id="drList"></div>
+  </aside>
+
+  <!-- ===== VOICE OVERLAY ===== -->
+  <div id="voice" class="hidden">
+    <div class="vo-card">
+      <div class="vo-rings"><span></span><span></span><span></span>
+        <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>
+      </div>
+      <h3 id="voTitle">Listening…</h3>
+      <p id="voText">Product ka naam bolein — e.g. "Coffee Serum"</p>
+      <button class="btn ghost" id="voCancel">Cancel</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="js/seed.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
