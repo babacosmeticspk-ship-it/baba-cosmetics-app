@@ -1,3 +1,23 @@
-line one
-  line two {"a": 1}
-end
+{
+  "name": "baba-cosmetics-app",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Baba Cosmetics Android app (v2 redesign) - products live from babacosmetics.com",
+  "scripts": {
+    "serve": "npx http-server www -p 8080 -c-1",
+    "sync": "npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor-community/speech-recognition": "7.0.1",
+    "@capacitor/android": "7.6.10",
+    "@capacitor/app": "7.1.2",
+    "@capacitor/browser": "7.0.5",
+    "@capacitor/core": "7.6.10",
+    "@capacitor/splash-screen": "7.0.5",
+    "@capacitor/status-bar": "7.0.6"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "3.0.5",
+    "@capacitor/cli": "7.6.10"
+  }
+}
