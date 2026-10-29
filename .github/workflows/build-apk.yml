@@ -1,7 +1,8 @@
-name: Build APK
+name: Build Baba Cosmetics APK
 
 on:
   push:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -10,19 +11,74 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
+      - name: Install packages
+        run: npm install
+
+      - name: Download Baba Cosmetics logo
+        run: |
+          curl -L --fail -o www/assets/logo.png "https://babacosmetics.com/cdn/shop/files/LOGO_ecdffdbf-7ac6-4045-8a38-024980327e99_500x.png?v=1759939619" || echo "logo download failed - app will load it online"
+
+      - name: Create Android project
+        run: |
+          rm -rf android
+          npx cap add android
+
+      - name: App icon + native splash from logo
+        run: |
+          mkdir -p assets
+          if [ -s www/assets/logo.png ]; then
+            (command -v magick >/dev/null && IM=magick) || IM=convert
+            $IM -size 1024x1024 xc:white \( www/assets/logo.png -resize 760x760 \) -gravity center -composite assets/icon-only.png
+            $IM -size 1024x1024 xc:white assets/icon-background.png
+            $IM -size 1024x1024 xc:none \( www/assets/logo.png -resize 600x600 \) -gravity center -composite assets/icon-foreground.png
+            $IM -size 2732x2732 xc:white \( www/assets/logo.png -resize 900x900 \) -gravity center -composite assets/splash.png
+            cp assets/splash.png assets/splash-dark.png
+            npx capacitor-assets generate --android --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff' || echo "icon generation skipped"
+          fi
+
+      - name: Keep the same app icon as the old app (if present)
+        run: |
+          if [ -f app/src/main/res/mipmap-xxxhdpi/ic_launcher.png ]; then
+            rm -rf android/app/src/main/res/mipmap-anydpi-v26
+            for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+              mkdir -p android/app/src/main/res/mipmap-$d
+              cp app/src/main/res/mipmap-$d/ic_launcher*.png android/app/src/main/res/mipmap-$d/ 2>/dev/null || true
+            done
+            rm -f android/app/src/main/res/mipmap-*/ic_launcher_foreground.png
+          fi
+
+      - name: Sync web files
+        run: npx cap sync android
+
+      - name: Microphone permission for voice search
+        run: |
+          python3 - <<'PY'
+          p = "android/app/src/main/AndroidManifest.xml"
+          s = open(p).read()
+          if "RECORD_AUDIO" not in s:
+              s = s.replace("</manifest>",
+                '    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n'
+                '    <queries>\n        <intent>\n            <action android:name="android.speech.RecognitionService" />\n        </intent>\n    </queries>\n</manifest>')
+          open(p, "w").write(s)
+          PY
 
       - name: Build APK
-        run: gradle assembleDebug --no-daemon
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          name: BabaCosmetics-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: BabaCosmetics-App
+          path: android/app/build/outputs/apk/debug/app-debug.apk
